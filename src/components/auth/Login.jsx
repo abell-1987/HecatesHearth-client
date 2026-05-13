@@ -21,7 +21,7 @@ export const Login = () => {
             .then(authInfo => {
                 if (authInfo.valid) {
                     localStorage.setItem("HecatesHearth_token", JSON.stringify(authInfo))
-                    navigate("/")
+                    navigate("/home")
                 } else {
                     existDialog.current.showModal()
                 }

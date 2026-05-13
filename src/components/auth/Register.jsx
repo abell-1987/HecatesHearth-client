@@ -28,7 +28,7 @@ export const Register = () => {
             .then(authInfo => {
                 if (authInfo && authInfo.token) {
                     localStorage.setItem("HecatesHearth_token", JSON.stringify(authInfo))
-                    navigate("/")
+                    navigate("/home")
                 } else {
                     existDialog.current.showModal()
                 }

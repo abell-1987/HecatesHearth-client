@@ -3,12 +3,13 @@ import { NavBar } from "./nav/Navbar.jsx"
 
 export const Authorized = () => {
   if (localStorage.getItem("HecatesHearth_token")) {
-    return <>
-      <NavBar />
-      <main className="p-4">
+    return (
+      <>
+        <NavBar />
         <Outlet />
-      </main>
-    </>
+      </>
+    )
   }
-  return <Navigate to="/login" replace />
+
+  return <Navigate to="/" replace />
 }
