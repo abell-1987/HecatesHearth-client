@@ -1,0 +1,41 @@
+.read-stories {
+    padding-top: 7rem;
+}
+
+.read-stories__intro {
+    padding: 2rem;
+    text-align: center;
+}
+
+.read-stories__list {
+    margin-top: 2rem;
+}
+
+.read-stories__card {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.read-stories__story-title {
+    margin-top: 0;
+    font-family: "Almendra Display", Georgia, serif;
+    font-size: 2rem;
+}
+
+.read-stories__story-title a {
+    color: #9b5de5;
+}
+
+.read-stories__location {
+    color: #ffffff;
+    font-style: italic;
+}
+
+.read-stories__preview {
+    color: #ffffff;
+    line-height: 1.7;
+}
+
+.read-stories__types {
+    color: #caa4ff;
+}

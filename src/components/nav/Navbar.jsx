@@ -3,44 +3,57 @@ import "./Navbar.css"
 
 export const NavBar = () => {
     const navigate = useNavigate()
+    const isLoggedIn = localStorage.getItem("HecatesHearth_token") !== null
 
     return (
-        <ul className="navbar">
-            {localStorage.getItem("HecatesHearth_token") !== null ? (
-                <>
-                    <li className="navbar__item">
-                        <NavLink to="/home">Home</NavLink>
-                    </li>
-                    <li className="navbar__item">
-                        <NavLink to="/stories">Stories</NavLink>
-                    </li>
-                    <li className="navbar__item">
-                        <NavLink to="/locations">Locations</NavLink>
-                    </li>
-                    <li className="navbar__item">
-                        <NavLink to="/stories/new">Submit Story</NavLink>
-                    </li>
-                    <li className="navbar__item">
+        <nav className="navbar">
+            <div className="navbar__left">
+                <NavLink className="navbar__link" to="/">
+                    Home
+                </NavLink>
+            </div>
+
+            <div className="navbar__right">
+                {isLoggedIn ? (
+                    <>
+                        <NavLink className="navbar__link" to="/locations">
+                            Famous Hauntings
+                        </NavLink>
+
+                        <NavLink className="navbar__link" to="/read-stories">
+                            Read a Story
+                        </NavLink>
+
+                        <NavLink className="navbar__link" to="/stories/new">
+                            Submit a Story
+                        </NavLink>
+
+                        <NavLink className="navbar__link" to="/stories">
+                            My Stories
+                        </NavLink>
+
                         <button
+                            className="navbar__button"
                             onClick={() => {
                                 localStorage.removeItem("HecatesHearth_token")
-                                navigate("/login")
+                                navigate("/")
                             }}
                         >
                             Logout
                         </button>
-                    </li>
-                </>
-            ) : (
-                <>
-                    <li className="navbar__item">
-                        <NavLink to="/login">Login</NavLink>
-                    </li>
-                    <li className="navbar__item">
-                        <NavLink to="/register">Register</NavLink>
-                    </li>
-                </>
-            )}
-        </ul>
+                    </>
+                ) : (
+                    <>
+                        <NavLink className="navbar__link" to="/register">
+                            Register
+                        </NavLink>
+
+                        <NavLink className="navbar__link" to="/login">
+                            Login
+                        </NavLink>
+                    </>
+                )}
+            </div>
+        </nav>
     )
 }

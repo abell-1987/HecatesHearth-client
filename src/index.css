@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Almendra+Display&display=swap');
+
 :root {
   font-family: Georgia, "Times New Roman", serif;
   color: #f7efe0;
@@ -11,7 +13,7 @@ body {
   background-color: #111;
   background-image: url("./assets/background.png");
   background-repeat: repeat;
-  background-size: 300px;
+  background-size: auto;
 }
 
 a {
@@ -38,13 +40,13 @@ button:hover {
 }
 
 main {
-  padding-top: 5rem;
+  padding-top: 0;
 }
 
 .page {
   max-width: 900px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 5.5rem 2rem 2rem;
 }
 
 .card {
@@ -103,4 +105,25 @@ textarea {
   display: flex;
   gap: 0.75rem;
   margin-top: 1rem;
+}
+
+.gothic-title {
+  font-family: "Almendra Display", Georgia, serif;
+  color: #9b5de5;
+  letter-spacing: 0.08rem;
+  font-weight: 700;
+  font-size: 3rem;
+}
+
+.gothic-card {
+  background-color: #000;
+  border: 3px double #9b5de5;
+  border-radius: 18px;
+  box-shadow:
+    0 0 18px rgba(155, 93, 229, 0.35),
+    inset 0 0 20px rgba(155, 93, 229, 0.18);
+}
+
+.gothic-card-text {
+  color: #ffffff;
 }
