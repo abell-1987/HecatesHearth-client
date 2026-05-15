@@ -1,15 +1,19 @@
 import { useRef, useState } from "react"
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"
 import "./Login.css"
+import loginImage from "../../assets/login.png"
 
 export const Login = () => {
-    const [email, setEmail] = useState("tyler@hilliard.com")
-    const [password, setPassword] = useState("hilliard")
-    const existDialog = useRef()
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+
+    const userDoesNotExistDialog = useRef()
+    const incorrectPasswordDialog = useRef()
     const navigate = useNavigate()
 
     const handleLogin = (e) => {
         e.preventDefault()
+
         fetch("http://localhost:8000/login", {
             method: "POST",
             body: JSON.stringify({ email, password }),
@@ -17,58 +21,95 @@ export const Login = () => {
                 "Content-Type": "application/json"
             }
         })
-            .then(res => res.json())
-            .then(authInfo => {
+            .then((res) => res.json())
+            .then((authInfo) => {
                 if (authInfo.valid) {
                     localStorage.setItem("HecatesHearth_token", JSON.stringify(authInfo))
                     navigate("/home")
+                } else if (authInfo.reason === "incorrect_password") {
+                    incorrectPasswordDialog.current.showModal()
                 } else {
-                    existDialog.current.showModal()
+                    userDoesNotExistDialog.current.showModal()
                 }
             })
     }
 
     return (
-        <main className="container--login">
-            <dialog className="dialog dialog--auth" ref={existDialog}>
+        <main className="login-page">
+            <dialog className="dialog dialog--auth" ref={userDoesNotExistDialog}>
                 <div>User does not exist</div>
-                <button className="button--close" onClick={() => existDialog.current.close()}>Close</button>
+
+                <button
+                    className="button--close gothic-register-button"
+                    onClick={() => userDoesNotExistDialog.current.close()}
+                >
+                    Close
+                </button>
             </dialog>
 
-            <section>
-                <form className="form--login" onSubmit={handleLogin}>
-                    <h1 className="text-4xl mt-7 mb-3">"HecatesHearth"</h1>
-                    <h2 className="text-xl mb-10">Please sign in</h2>
+            <dialog className="dialog dialog--auth" ref={incorrectPasswordDialog}>
+                <div>Incorrect Password</div>
+
+                <button
+                    className="button--close gothic-register-button"
+                    onClick={() => incorrectPasswordDialog.current.close()}
+                >
+                    Close
+                </button>
+            </dialog>
+
+            <img
+                className="login-page__image"
+                src={loginImage}
+                alt="Login to Hecate's Hearth"
+            />
+
+            <section className="login-page__content">
+                <form className="form--login gothic-card login-form" onSubmit={handleLogin}>
                     <fieldset className="mb-4">
-                        <label htmlFor="inputEmail"> Email address </label>
-                        <input type="email" id="inputEmail"
+                        <label htmlFor="inputEmail">Email address</label>
+
+                        <input
+                            type="email"
+                            id="inputEmail"
                             value={email}
-                            onChange={evt => setEmail(evt.target.value)}
+                            onChange={(evt) => setEmail(evt.target.value)}
                             className="form-control"
                             placeholder="Email address"
-                            required autoFocus />
-                    </fieldset>
-                    <fieldset className="mb-4">
-                        <label htmlFor="inputPassword"> Password </label>
-                        <input type="password" id="inputPassword"
-                            value={password}
-                            onChange={evt => setPassword(evt.target.value)}
-                            className="form-control"
-                            placeholder="Password"
+                            autoComplete="new-email"
+                            required
+                            autoFocus
                         />
                     </fieldset>
+
+                    <fieldset className="mb-4">
+                        <label htmlFor="inputPassword">Password</label>
+
+                        <input
+                            type="password"
+                            id="inputPassword"
+                            value={password}
+                            onChange={(evt) => setPassword(evt.target.value)}
+                            className="form-control"
+                            placeholder="Password"
+                            autoComplete="new-password"
+                            required
+                        />
+                    </fieldset>
+
                     <fieldset>
-                        <button type="submit" className="button">
-                            Sign in
+                        <button type="submit" className="gothic-register-button">
+                            Login
                         </button>
                     </fieldset>
                 </form>
-            </section>
-            <div className="loginLinks">
-                <section className="link--register">
-                    <Link to="/register">Not a member yet?</Link>
+
+                <section className="login-page__register-link">
+                    <Link className="gothic-auth-link" to="/register">
+                        Not a member yet?
+                    </Link>
                 </section>
-            </div>
+            </section>
         </main>
     )
 }

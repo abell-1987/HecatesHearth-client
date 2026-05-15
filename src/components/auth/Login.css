@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 2rem;
+  padding: 5.5rem 2rem 2rem;
 }
 
 .form--login {
@@ -13,9 +13,6 @@
   width: 100%;
   max-width: 400px;
   padding: 2rem;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
 }
 
 .form--login fieldset {
@@ -28,29 +25,34 @@
 }
 
 .form--login label {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
-  color: #444;
+  color: #ffffff;
 }
 
 .form--login input {
   padding: 0.5rem 0.75rem;
   font-size: 1rem;
-  border: 1px solid #ccc;
+  border: 1px solid #9b5de5;
   border-radius: 4px;
   outline: none;
   transition: border-color 0.2s;
 }
 
 .form--login input:focus {
-  border-color: #646cff;
+  border-color: #caa4ff;
 }
 
 .dialog--auth {
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border: 3px double #9b5de5;
+  border-radius: 12px;
   padding: 1.5rem;
   text-align: center;
+  background-color: #000;
+  color: #ffffff;
+  box-shadow:
+    0 0 18px rgba(155, 93, 229, 0.35),
+    inset 0 0 20px rgba(155, 93, 229, 0.18);
 }
 
 .button--close {
@@ -60,4 +62,102 @@
 .loginLinks {
   margin-top: 1rem;
   text-align: center;
+}
+
+.register-page,
+.login-page {
+  min-height: 100vh;
+  padding: 5.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.register-page__image,
+.login-page__image {
+  width: 100%;
+  max-width: 620px;
+  height: auto;
+  margin-bottom: 1.5rem;
+}
+
+.register-page__content,
+.login-page__content {
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.register-form,
+.login-form {
+  box-sizing: border-box;
+}
+
+.register-page__login-link,
+.login-page__register-link {
+  margin-top: 1.25rem;
+  text-align: center;
+}
+
+.gothic-auth-link {
+  font-family: "Almendra Display", Georgia, serif;
+  color: #caa4ff;
+  font-size: 1.35rem;
+  letter-spacing: 0.05rem;
+  text-decoration: none;
+}
+
+.gothic-auth-link:hover {
+  color: #caa4ff;
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+  animation: purple-link-pulse 0.9s ease-in-out infinite;
+}
+
+.gothic-register-button {
+  width: 100%;
+  border: 3px double #9b5de5;
+  background-color: #000;
+  color: #9b5de5;
+  font-family: "Almendra Display", Georgia, serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.05rem;
+}
+
+.gothic-register-button:hover {
+  background-color: #9b5de5;
+  color: #000;
+  font-weight: 700;
+  border-color: #9b5de5;
+}
+
+.register-success-dialog {
+  max-width: 420px;
+  line-height: 1.6;
+}
+
+@keyframes purple-link-pulse {
+  0% {
+    text-shadow:
+      0 0 6px #ffffff,
+      0 0 12px #9b5de5,
+      0 0 20px #9b5de559;
+  }
+
+  50% {
+    text-shadow:
+      0 0 10px #ffffff,
+      0 0 22px #9b5de5,
+      0 0 36px #9b5de559,
+      0 0 52px #9b5de52e;
+  }
+
+  100% {
+    text-shadow:
+      0 0 6px #ffffff,
+      0 0 12px #9b5de5,
+      0 0 20px #9b5de559;
+  }
 }

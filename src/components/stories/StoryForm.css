@@ -1,0 +1,247 @@
+.new-story-page {
+    min-height: 100vh;
+    padding: 5.5rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.new-story-page__image {
+    width: 100%;
+    max-width: 620px;
+    height: auto;
+    margin-bottom: 1.5rem;
+}
+
+.new-story-form {
+    width: 100%;
+    max-width: 1380px;
+    box-sizing: border-box;
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+}
+
+.new-story-form__main-fields {
+    flex: 1;
+    max-width: 640px;
+}
+
+.new-story-form__main-fields fieldset {
+    margin-bottom: 1rem;
+}
+
+.new-story-form label {
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.new-story-form input,
+.new-story-form textarea {
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid #9b5de5;
+    border-radius: 4px;
+    outline: none;
+}
+
+.new-story-form input:focus,
+.new-story-form textarea:focus {
+    border-color: #caa4ff;
+}
+
+.new-story-form textarea {
+    min-height: 160px;
+}
+
+.location-search {
+    position: relative;
+}
+
+.location-search__results {
+    margin-top: 0.35rem;
+    border: 1px solid #9b5de5;
+    border-radius: 6px;
+    background-color: #000;
+    overflow: hidden;
+}
+
+.location-search__result {
+    width: 100%;
+    border: none;
+    border-radius: 0;
+    background-color: #000;
+    color: #ffffff;
+    text-align: left;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 0.95rem;
+    padding: 0.65rem 0.75rem;
+}
+
+.location-search__result:hover {
+    background-color: #1b141d;
+    color: #caa4ff;
+}
+
+.location-search__empty {
+    margin: 0;
+    padding: 0.75rem;
+    color: #ffffff;
+}
+
+.location-search__empty a {
+    color: #caa4ff;
+    font-family: "Almendra Display", Georgia, serif;
+    font-size: 1.1rem;
+}
+
+.new-story-form__haunting-types {
+    width: 300px;
+    border-left: 1px solid #9b5de5;
+    border-right: 1px solid #9b5de5;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.new-story-form__haunting-types-content {
+    width: fit-content;
+}
+
+.new-story-form__haunting-types h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-family: inherit;
+    letter-spacing: normal;
+}
+
+.new-story-form__haunting-types p {
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.haunting-type-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+.haunting-type-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #ffffff;
+}
+
+.haunting-type-option input {
+    accent-color: #9b5de5;
+}
+
+.haunting-type-option.disabled {
+    color: #777777;
+}
+
+.haunting-type-option.disabled input {
+    cursor: not-allowed;
+}
+
+.new-story-form__photos {
+    width: 280px;
+    padding-left: 0;
+    padding-right: 2rem;
+}
+
+.new-story-form__photos h2 {
+    margin: 0;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-family: inherit;
+    letter-spacing: normal;
+}
+
+.new-story-form__photos p {
+    margin-top: 0.25rem;
+    margin-bottom: 1rem;
+    color: #ffffff;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.photo-upload-types {
+    display: inline-block;
+    margin-top: 0.2rem;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+.new-story-form__photos input {
+    width: 100%;
+    color: #ffffff;
+    background-color: #000;
+}
+
+.photo-upload-list p {
+    color: #caa4ff;
+    font-size: 0.9rem;
+    word-break: break-word;
+}
+
+.gothic-story-button {
+    width: 100%;
+    border: 3px double #9b5de5;
+    background-color: #000;
+    color: #9b5de5;
+    font-family: "Almendra Display", Georgia, serif;
+    font-size: 1.4rem;
+    letter-spacing: 0.05rem;
+}
+
+.gothic-story-button:hover {
+    background-color: #9b5de5;
+    color: #000;
+    font-weight: 700;
+    border-color: #9b5de5;
+}
+
+.gothic-story-button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.gothic-story-button:disabled:hover {
+    background-color: #000;
+    color: #9b5de5;
+    font-weight: 400;
+}
+
+.new-story-success-dialog {
+    max-width: 420px;
+    line-height: 1.6;
+}
+
+@media (max-width: 800px) {
+    .new-story-form {
+        flex-direction: column;
+    }
+
+    .new-story-form__haunting-types,
+    .new-story-form__photos {
+        width: 100%;
+        border-left: none;
+        border-right: none;
+        border-top: 1px solid #9b5de5;
+        padding-left: 0;
+        padding-right: 0;
+        padding-top: 1.5rem;
+    }
+}
