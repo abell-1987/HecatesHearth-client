@@ -127,3 +127,7 @@ textarea {
 .gothic-card-text {
   color: #ffffff;
 }
+
+.preserve-line-breaks {
+  white-space: pre-wrap;
+}

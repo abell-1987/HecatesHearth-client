@@ -1,0 +1,80 @@
+.story-details-card {
+    padding: 1.5rem;
+    color: #ffffff;
+}
+
+.story-details-title {
+    margin-top: 0;
+    font-family: "Almendra Display", Georgia, serif;
+    font-size: 2.8rem;
+    color: #caa4ff;
+    letter-spacing: 0.05rem;
+}
+
+.story-details-link {
+    color: #caa4ff;
+    text-decoration: none;
+    animation: pulseGlow 2.2s infinite ease-in-out;
+}
+
+.story-details-link:hover {
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+.story-details-content {
+    margin-top: 1.5rem;
+    color: #ffffff;
+    line-height: 1.8;
+}
+
+.story-photos {
+    margin-top: 2rem;
+}
+
+.story-photos h2 {
+    color: #ffffff;
+    font-size: 1.2rem;
+}
+
+.story-photo-thumbnails {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.story-photo-thumbnail {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border: 2px solid #9b5de5;
+    border-radius: 8px;
+}
+
+.story-photo-thumbnail:hover {
+    opacity: 0.85;
+}
+
+.story-details-button-row {
+    justify-content: center;
+}
+
+.button-row .gothic-story-list-button {
+    width: auto;
+    min-width: 140px;
+}
+
+@keyframes pulseGlow {
+    0% {
+        opacity: 0.75;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.75;
+    }
+}

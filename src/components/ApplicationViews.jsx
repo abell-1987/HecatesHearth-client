@@ -9,7 +9,9 @@ import { StoryForm } from "./stories/StoryForm.jsx"
 import { StoryDetails } from "./stories/StoryDetails.jsx"
 import { LocationList } from "./locations/LocationList.jsx"
 import { LocationForm } from "./locations/LocationForm.jsx"
+import { LocationDetails } from "./locations/LocationDetails.jsx"
 import { ReadStories } from "./readStories/ReadStories.jsx"
+import { PhotoDetails } from "./photos/PhotoDetails.jsx"
 
 const ApplicationViews = () => {
     return (
@@ -28,10 +30,13 @@ const ApplicationViews = () => {
                         <Route path="/stories/:storyId" element={<StoryDetails />} />
                         <Route path="/stories/:storyId/edit" element={<StoryForm />} />
 
+                        <Route path="/photos/:photoId" element={<PhotoDetails />} />
+
                         <Route path="/read-stories" element={<ReadStories />} />
 
                         <Route path="/locations" element={<LocationList />} />
                         <Route path="/locations/new" element={<LocationForm />} />
+                        <Route path="/locations/:locationId" element={<LocationDetails />} />
                         <Route path="/locations/:locationId/edit" element={<LocationForm />} />
                     </Route>
                 </Route>

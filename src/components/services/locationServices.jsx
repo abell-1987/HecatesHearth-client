@@ -12,7 +12,13 @@ export const createLocation = (location) => {
     return apiFetch("/locations", {
         method: "POST",
         body: JSON.stringify(location)
-    }).then((res) => res.json())
+    }).then((res) => {
+        return res.json().then((data) => ({
+            ok: res.ok,
+            status: res.status,
+            data
+        }))
+    })
 }
 
 export const updateLocation = (id, location) => {

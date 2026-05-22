@@ -1,4 +1,4 @@
-.read-stories-page {
+.famous-locations-page {
     min-height: 100vh;
     padding: 5.5rem 2rem 2rem;
     display: flex;
@@ -6,7 +6,7 @@
     align-items: center;
 }
 
-.read-stories-layout {
+.famous-locations-layout {
     width: 100%;
     max-width: 1500px;
     display: grid;
@@ -15,11 +15,11 @@
     align-items: start;
 }
 
-.read-stories-main {
+.famous-locations-main {
     width: 100%;
 }
 
-.read-stories-page__image {
+.famous-locations-page__image {
     width: 100%;
     max-width: 620px;
     height: auto;
@@ -27,15 +27,15 @@
     display: block;
 }
 
-.read-stories-grid {
+.famous-locations-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 1.5rem;
     align-content: start;
 }
 
-.read-stories-no-results-area {
-    min-height: 430px;
+.famous-locations-no-results-area {
+    min-height: 360px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,24 +47,24 @@
     height: auto;
 }
 
-.read-story-card {
+.famous-location-card {
     box-sizing: border-box;
-    height: 430px;
+    height: 360px;
     padding: 1rem;
     color: #ffffff;
     overflow: hidden;
 }
 
-.read-story-card__image {
+.famous-location-card__image {
     width: 100%;
-    height: 170px;
+    height: 190px;
     object-fit: cover;
     border: 2px solid #9b5de5;
     border-radius: 10px;
     background-color: #000;
 }
 
-.read-story-card__title {
+.famous-location-card__title {
     margin: 1rem 0 0.75rem;
     font-family: "Almendra Display", Georgia, serif;
     font-size: 1.6rem;
@@ -72,35 +72,31 @@
     line-height: 1.1;
 }
 
-.read-story-card__title a {
+.famous-location-card__title a {
     color: #caa4ff;
     text-decoration: none;
 }
 
-.read-story-card__title a:hover {
+.famous-location-card__title a:hover {
     color: #caa4ff;
     text-decoration: underline;
     text-underline-offset: 0.25rem;
 }
 
-.read-story-card p {
+.famous-location-card p {
     margin: 0.45rem 0;
     font-size: 0.95rem;
     line-height: 1.35;
 }
 
-.read-story-card__location-name {
-    font-weight: 700;
-}
-
-.read-stories-filter {
+.famous-locations-filter {
     box-sizing: border-box;
     width: 100%;
     padding: 1.25rem;
     color: #ffffff;
 }
 
-.read-stories-filter__image {
+.famous-locations-filter__image {
     display: block;
     width: 100%;
     max-width: 160px;
@@ -108,7 +104,7 @@
     margin: 0 auto 1rem;
 }
 
-.read-stories-filter fieldset {
+.famous-locations-filter fieldset {
     border: none;
     padding: 0;
     margin: 0 0 1rem;
@@ -117,15 +113,15 @@
     gap: 0.4rem;
 }
 
-.read-stories-filter label,
-.read-stories-filter legend {
+.famous-locations-filter label,
+.famous-locations-filter legend {
     color: #ffffff;
     font-size: 0.95rem;
     font-weight: 500;
 }
 
-.read-stories-filter input,
-.read-stories-filter select {
+.famous-locations-filter input,
+.famous-locations-filter select {
     padding: 0.5rem 0.75rem;
     font-size: 1rem;
     border: 1px solid #9b5de5;
@@ -133,18 +129,27 @@
     outline: none;
 }
 
-.read-stories-filter input:focus,
-.read-stories-filter select:focus {
+.famous-locations-filter input:focus,
+.famous-locations-filter select:focus {
     border-color: #caa4ff;
 }
 
-.read-stories-filter__checkboxes {
+.famous-locations-city-state-row {
+    display: flex;
+    flex-direction: column;
+}
+
+.famous-locations-state-field {
+    width: 100%;
+}
+
+.famous-locations-filter__checkboxes {
     display: flex;
     flex-direction: column;
     gap: 0.55rem;
 }
 
-.read-stories-filter__checkboxes label {
+.famous-locations-filter__checkboxes label {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -152,43 +157,47 @@
     line-height: 1.3;
 }
 
-.read-stories-filter__checkboxes input {
+.famous-locations-filter__checkboxes input {
     accent-color: #9b5de5;
 }
 
-.read-stories-filter__buttons {
+.famous-locations-filter__buttons {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     margin-top: 1rem;
 }
 
-.read-stories-filter__buttons .gothic-story-list-button {
+.famous-locations-filter__buttons .gothic-story-list-button {
     width: 100%;
 }
 
 @media (max-width: 1250px) {
-    .read-stories-grid {
+    .famous-locations-grid {
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
 @media (max-width: 950px) {
-    .read-stories-layout {
+    .famous-locations-layout {
         grid-template-columns: 1fr;
     }
 
-    .read-stories-grid {
+    .famous-locations-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .read-stories-filter {
+    .famous-locations-filter {
         order: -1;
     }
 }
 
 @media (max-width: 620px) {
-    .read-stories-grid {
+    .famous-locations-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .famous-locations-city-state-row {
         grid-template-columns: 1fr;
     }
 }

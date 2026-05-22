@@ -1,22 +1,43 @@
 import { useEffect, useRef, useState } from "react"
-import { Link, useNavigate, useParams } from "react-router-dom"
-import { getLocations } from "../services/locationServices.jsx"
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
+import {
+    createLocation,
+    getLocationById,
+    getLocations
+} from "../services/locationServices.jsx"
+import { getStates } from "../services/stateServices.jsx"
 import { getHauntingTypes } from "../services/hauntingTypeServices.jsx"
 import { createStory, getStoryById, updateStory } from "../services/storyServices.jsx"
-import { uploadStoryPhoto } from "../services/storyPhotoServices.jsx"
+import {
+    deleteStoryPhoto,
+    getStoryPhotos,
+    uploadStoryPhoto
+} from "../services/storyPhotoServices.jsx"
 import newStoryImage from "../../assets/new story.png"
 import "./StoryForm.css"
 
 export const StoryForm = () => {
     const navigate = useNavigate()
     const { storyId } = useParams()
+    const [searchParams] = useSearchParams()
+    const preselectedLocationId = searchParams.get("locationId")
     const successDialog = useRef()
 
     const [locations, setLocations] = useState([])
+    const [states, setStates] = useState([])
     const [hauntingTypes, setHauntingTypes] = useState([])
     const [photos, setPhotos] = useState([])
+    const [existingPhotos, setExistingPhotos] = useState([])
     const [locationSearch, setLocationSearch] = useState("")
     const [selectedLocationId, setSelectedLocationId] = useState("")
+    const [preselectedLocation, setPreselectedLocation] = useState(null)
+    const [isPrivateResidence, setIsPrivateResidence] = useState(false)
+
+    const [privateResidence, setPrivateResidence] = useState({
+        description: "",
+        city: "",
+        state_id: ""
+    })
 
     const [story, setStory] = useState({
         title: "",
@@ -27,6 +48,7 @@ export const StoryForm = () => {
 
     useEffect(() => {
         getLocations().then(setLocations)
+        getStates().then(setStates)
         getHauntingTypes().then(setHauntingTypes)
     }, [])
 
@@ -42,22 +64,67 @@ export const StoryForm = () => {
 
                 setSelectedLocationId(storyData.location.id)
                 setLocationSearch(
-                    `${storyData.location.name} - ${storyData.location.city}, ${storyData.location.state}`
+                    `${storyData.location.name} - ${storyData.location.city}, ${storyData.location.state.abbreviation}`
                 )
+
+                if (storyData.location.name.toLowerCase() === "private residence") {
+                    setPreselectedLocation(storyData.location)
+                } else {
+                    setPreselectedLocation(null)
+                }
             })
+
+            getStoryPhotos(storyId).then(setExistingPhotos)
+        } else {
+            setStory({
+                title: "",
+                content: "",
+                location_id: "",
+                haunting_type_ids: []
+            })
+
+            setPhotos([])
+            setExistingPhotos([])
+            setLocationSearch("")
+            setSelectedLocationId("")
+            setIsPrivateResidence(false)
+            setPrivateResidence({
+                description: "",
+                city: "",
+                state_id: ""
+            })
+
+            if (preselectedLocationId) {
+                getLocationById(preselectedLocationId).then((locationData) => {
+                    setPreselectedLocation(locationData)
+                    setSelectedLocationId(locationData.id)
+                    setLocationSearch(
+                        `${locationData.name} - ${locationData.city}, ${locationData.state.abbreviation}`
+                    )
+                })
+            } else {
+                setPreselectedLocation(null)
+            }
         }
-    }, [storyId])
+    }, [storyId, preselectedLocationId])
 
     const matchingLocations = locationSearch
         ? locations.filter((location) => {
-            const fullLocation = `${location.name} ${location.city} ${location.state}`.toLowerCase()
-            return fullLocation.includes(locationSearch.toLowerCase())
+            const isPrivateResidence =
+                location.name.toLowerCase() === "private residence"
+
+            const fullLocation = `${location.name} ${location.city} ${location.state.abbreviation}`.toLowerCase()
+
+            return (
+                !isPrivateResidence &&
+                fullLocation.includes(locationSearch.toLowerCase())
+            )
         })
         : []
 
     const handleLocationSelect = (location) => {
         setSelectedLocationId(location.id)
-        setLocationSearch(`${location.name} - ${location.city}, ${location.state}`)
+        setLocationSearch(`${location.name} - ${location.city}, ${location.state.abbreviation}`)
 
         const copy = { ...story }
         copy.location_id = location.id
@@ -81,28 +148,80 @@ export const StoryForm = () => {
         setPhotos(selectedPhotos)
     }
 
+    const removeSelectedPhoto = (photoName) => {
+        const filteredPhotos = photos.filter((photo) => photo.name !== photoName)
+        setPhotos(filteredPhotos)
+    }
+
+    const removeExistingPhoto = (photoId) => {
+        deleteStoryPhoto(photoId).then(() => {
+            getStoryPhotos(storyId).then(setExistingPhotos)
+        })
+    }
+
+    const uploadPhotosForStory = (createdStoryId) => {
+        const photoUploads = photos.map((photo) => {
+            return uploadStoryPhoto(createdStoryId, photo)
+        })
+
+        return Promise.all(photoUploads)
+    }
+
+    const createStoryWithLocation = (locationId) => {
+        const storyToSend = {
+            ...story,
+            location_id: locationId
+        }
+
+        return createStory(storyToSend).then((createdStory) => {
+            return uploadPhotosForStory(createdStory.id).then(() => {
+                successDialog.current.showModal()
+            })
+        })
+    }
+
     const handleSave = (event) => {
         event.preventDefault()
 
-        const storyToSend = {
-            ...story,
-            location_id: selectedLocationId
-        }
-
         if (storyId) {
-            updateStory(storyId, storyToSend).then(() => navigate("/stories"))
-        } else {
-            createStory(storyToSend).then((createdStory) => {
-                const photoUploads = photos.map((photo) => {
-                    return uploadStoryPhoto(createdStory.id, photo)
-                })
+            const storyToSend = {
+                ...story,
+                location_id: selectedLocationId
+            }
 
-                Promise.all(photoUploads).then(() => {
-                    successDialog.current.showModal()
+            updateStory(storyId, storyToSend).then(() => {
+                uploadPhotosForStory(storyId).then(() => {
+                    navigate("/stories")
                 })
             })
+        } else if (isPrivateResidence) {
+            const privateResidenceToSend = {
+                name: "Private Residence",
+                city: privateResidence.city,
+                state_id: parseInt(privateResidence.state_id),
+                description: privateResidence.description,
+                history: "",
+                source_url: "",
+                is_famous: false
+            }
+
+            createLocation(privateResidenceToSend).then((response) => {
+                if (response.ok) {
+                    createStoryWithLocation(response.data.id)
+                }
+            })
+        } else {
+            createStoryWithLocation(selectedLocationId)
         }
     }
+
+    const canSubmitStory =
+        selectedLocationId || (
+            isPrivateResidence &&
+            privateResidence.description.trim() !== "" &&
+            privateResidence.city.trim() !== "" &&
+            privateResidence.state_id !== ""
+        )
 
     return (
         <main className="new-story-page">
@@ -159,49 +278,170 @@ export const StoryForm = () => {
 
                     <fieldset className="location-search">
                         <label htmlFor="locationSearch">Location</label>
-                        <input
-                            type="text"
-                            id="locationSearch"
-                            value={locationSearch}
-                            onChange={(event) => {
-                                setLocationSearch(event.target.value)
-                                setSelectedLocationId("")
 
-                                const copy = { ...story }
-                                copy.location_id = ""
-                                setStory(copy)
-                            }}
-                            placeholder="Start typing a location..."
-                            required
-                        />
-
-                        {locationSearch && !selectedLocationId ? (
-                            <div className="location-search__results">
-                                {matchingLocations.length > 0 ? (
-                                    matchingLocations.map((location) => (
-                                        <button
-                                            type="button"
-                                            className="location-search__result"
-                                            key={location.id}
-                                            onClick={() => handleLocationSelect(location)}
-                                        >
-                                            {location.name} - {location.city}, {location.state}
-                                        </button>
-                                    ))
-                                ) : (
-                                    <p className="location-search__empty">
-                                        Can&apos;t find a match? Submit a new location{" "}
-                                        <Link to="/locations/new">here</Link>.
-                                    </p>
-                                )}
+                        {preselectedLocation ? (
+                            <div className="preselected-private-location">
+                                <p>
+                                    <strong>
+                                        {preselectedLocation.name} - {preselectedLocation.city}, {preselectedLocation.state.abbreviation}
+                                    </strong>
+                                </p>
+                                <p>
+                                    <strong>Location Created:</strong>{" "}
+                                    {new Date(preselectedLocation.created_at).toLocaleDateString()}
+                                </p>
+                                <p>
+                                    <strong>Location Created By:</strong>{" "}
+                                    {preselectedLocation.creator_name}
+                                </p>
                             </div>
-                        ) : null}
+                        ) : (
+                            <>
+                                <p className="story-form-helper-text">
+                                    Is this location open to the public? Use the field below or add the location if you do not find a match.
+                                </p>
+
+                                {!isPrivateResidence ? (
+                                    <>
+                                        <input
+                                            type="text"
+                                            id="locationSearch"
+                                            value={locationSearch}
+                                            onChange={(event) => {
+                                                setLocationSearch(event.target.value)
+                                                setSelectedLocationId("")
+
+                                                const copy = { ...story }
+                                                copy.location_id = ""
+                                                setStory(copy)
+                                            }}
+                                            placeholder="Start typing a location..."
+                                            required={!isPrivateResidence}
+                                        />
+
+                                        {locationSearch && !selectedLocationId ? (
+                                            <div className="location-search__results">
+                                                {matchingLocations.length > 0 ? (
+                                                    matchingLocations.map((location) => (
+                                                        <button
+                                                            type="button"
+                                                            className="location-search__result"
+                                                            key={location.id}
+                                                            onClick={() => handleLocationSelect(location)}
+                                                        >
+                                                            {location.name} - {location.city}, {location.state.abbreviation}
+                                                        </button>
+                                                    ))
+                                                ) : (
+                                                    <p className="location-search__empty">
+                                                        Can&apos;t find a match? Submit a new location{" "}
+                                                        <Link to="/locations/new">here</Link>.
+                                                    </p>
+                                                )}
+                                            </div>
+                                        ) : null}
+                                    </>
+                                ) : null}
+                            </>
+                        )}
                     </fieldset>
+
+                    {!storyId && !preselectedLocation ? (
+                        <fieldset className="private-residence-checkbox-field">
+                            <label className="private-residence-checkbox-label">
+                                <input
+                                    type="checkbox"
+                                    checked={isPrivateResidence}
+                                    onChange={(event) => {
+                                        const isChecked = event.target.checked
+                                        setIsPrivateResidence(isChecked)
+
+                                        if (isChecked) {
+                                            setSelectedLocationId("")
+                                            setLocationSearch("")
+                                            setStory({
+                                                ...story,
+                                                location_id: ""
+                                            })
+                                        } else {
+                                            setPrivateResidence({
+                                                description: "",
+                                                city: "",
+                                                state_id: ""
+                                            })
+                                        }
+                                    }}
+                                />
+                                <span>
+                                    Is this location a private home you once lived in or visited? Click this check box and fill out the additional fields that appear in lieu of the location field above.
+                                </span>
+                            </label>
+                        </fieldset>
+                    ) : null}
+
+                    {isPrivateResidence && !preselectedLocation ? (
+                        <section className="private-residence-fields">
+                            <fieldset>
+                                <label htmlFor="privateResidenceDescription">Description</label>
+                                <textarea
+                                    id="privateResidenceDescription"
+                                    value={privateResidence.description}
+                                    onChange={(event) => {
+                                        setPrivateResidence({
+                                            ...privateResidence,
+                                            description: event.target.value
+                                        })
+                                    }}
+                                    required={isPrivateResidence}
+                                />
+                            </fieldset>
+
+                            <section className="private-residence-city-state-row">
+                                <fieldset className="private-residence-city-field">
+                                    <label htmlFor="privateResidenceCity">City</label>
+                                    <input
+                                        type="text"
+                                        id="privateResidenceCity"
+                                        value={privateResidence.city}
+                                        onChange={(event) => {
+                                            setPrivateResidence({
+                                                ...privateResidence,
+                                                city: event.target.value
+                                            })
+                                        }}
+                                        required={isPrivateResidence}
+                                    />
+                                </fieldset>
+
+                                <fieldset className="private-residence-state-field">
+                                    <label htmlFor="privateResidenceState">State</label>
+                                    <select
+                                        id="privateResidenceState"
+                                        value={privateResidence.state_id}
+                                        onChange={(event) => {
+                                            setPrivateResidence({
+                                                ...privateResidence,
+                                                state_id: event.target.value
+                                            })
+                                        }}
+                                        required={isPrivateResidence}
+                                    >
+                                        <option value="">State</option>
+                                        {states.map((state) => (
+                                            <option key={state.id} value={state.id}>
+                                                {state.abbreviation}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </fieldset>
+                            </section>
+                        </section>
+                    ) : null}
 
                     <button
                         type="submit"
                         className="gothic-story-button"
-                        disabled={!selectedLocationId}
+                        disabled={!canSubmitStory}
                     >
                         {storyId ? "Save Changes" : "Submit Story"}
                     </button>
@@ -247,6 +487,23 @@ export const StoryForm = () => {
                         </span>
                     </p>
 
+                    {storyId && existingPhotos.length > 0 ? (
+                        <div className="existing-photo-list">
+                            {existingPhotos.map((photo) => (
+                                <div className="photo-upload-item" key={photo.id}>
+                                    <span>{photo.image.split("/").pop()}</span>
+                                    <button
+                                        type="button"
+                                        className="photo-remove-button"
+                                        onClick={() => removeExistingPhoto(photo.id)}
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                    ) : null}
+
                     <input
                         type="file"
                         accept="image/*"
@@ -256,7 +513,16 @@ export const StoryForm = () => {
 
                     <div className="photo-upload-list">
                         {photos.map((photo) => (
-                            <p key={photo.name}>{photo.name}</p>
+                            <div className="photo-upload-item" key={photo.name}>
+                                <span>{photo.name}</span>
+                                <button
+                                    type="button"
+                                    className="photo-remove-button"
+                                    onClick={() => removeSelectedPhoto(photo.name)}
+                                >
+                                    X
+                                </button>
+                            </div>
                         ))}
                     </div>
                 </section>

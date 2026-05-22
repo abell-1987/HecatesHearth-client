@@ -29,7 +29,7 @@ export const NavBar = () => {
                         </NavLink>
 
                         <NavLink className="navbar__link" to="/stories">
-                            My Stories
+                            Your Stories
                         </NavLink>
 
                         <button

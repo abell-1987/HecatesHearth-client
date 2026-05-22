@@ -245,3 +245,99 @@
         padding-top: 1.5rem;
     }
 }
+
+.existing-photo-list,
+.photo-upload-list {
+    margin-top: 1rem;
+}
+
+.photo-upload-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    color: #caa4ff;
+    font-size: 0.9rem;
+    word-break: break-word;
+    margin-bottom: 0.5rem;
+}
+
+.photo-remove-button {
+    width: auto;
+    border: 1px solid #9b5de5;
+    background-color: #000;
+    color: #9b5de5;
+    padding: 0.15rem 0.45rem;
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.photo-remove-button:hover {
+    background-color: #9b5de5;
+    color: #000;
+    font-weight: 700;
+}
+
+.story-form-helper-text {
+    margin: 0;
+    color: #ffffff;
+    font-style: italic;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.private-residence-checkbox-field {
+    margin-top: 1rem;
+}
+
+.private-residence-checkbox-label {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.7rem;
+    color: #ffffff;
+    line-height: 1.5;
+}
+
+.private-residence-checkbox-label input {
+    margin-top: 0.25rem;
+    accent-color: #9b5de5;
+}
+
+.private-residence-fields {
+    margin-top: 1rem;
+}
+
+.private-residence-city-state-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.private-residence-city-field {
+    flex: 1;
+}
+
+.private-residence-state-field {
+    width: 120px;
+}
+
+@media (max-width: 700px) {
+    .private-residence-city-state-row {
+        flex-direction: column;
+    }
+
+    .private-residence-state-field {
+        width: 100%;
+    }
+}
+
+.preselected-private-location {
+    margin-top: 0.4rem;
+    color: #ffffff;
+    line-height: 1.5;
+}
+
+.preselected-private-location p {
+    margin: 0 0 0.4rem 0;
+}

@@ -1,0 +1,30 @@
+.photo-details-page {
+    min-height: 100vh;
+    padding: 5.5rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.photo-details-page__image {
+    max-width: 90%;
+    max-height: 70vh;
+    object-fit: contain;
+    border: 2px solid #9b5de5;
+    border-radius: 10px;
+    background-color: #000;
+}
+
+.photo-details-page__info {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    max-width: 650px;
+    width: 100%;
+    box-sizing: border-box;
+    color: #ffffff;
+    text-align: left;
+}
+
+.photo-details-page__info a {
+    color: #caa4ff;
+}
